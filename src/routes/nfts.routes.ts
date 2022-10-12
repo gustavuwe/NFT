@@ -21,9 +21,9 @@ function verifyIfNftAlreadyExists(request, response, next) {
 }
 
 nftsRoutes.post("/", (request, response) => {
-    const {name, description, deadline, price} = request.body;
+    const {name, author, description, deadline, price} = request.body;
 
-    nftsRepository.create({ name, description, deadline, price });
+    nftsRepository.create({ name, author, description, deadline, price });
 
     return response.status(201).send();
     
@@ -36,9 +36,9 @@ nftsRoutes.get("/", (request, response) => {
 })
 
 nftsRoutes.patch("/bid", (request, response) => {
-    const { id, offer } = request.body;
+    const { walletId, id, offer } = request.body;
 
-    nftsRepository.bid({ id, offer })
+    nftsRepository.bid({ walletId, id, offer })
 
     return response.status(200).send();
 })
@@ -64,6 +64,12 @@ nftsRoutes.patch("/buynft", (request, response) => {
     nftsRepository.buyNft({ walletId, nftId })
 
     return response.status(200).send();
+})
+
+nftsRoutes.get("/transactions", (request, response) => {
+    const allTransactions = nftsRepository.listTransactions();
+
+    return response.json(allTransactions)
 })
 
 export { nftsRoutes }

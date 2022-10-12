@@ -4,13 +4,18 @@ class Wallet {
     id?: string;
     savePhrase: string;
     ballance: number;
-    nftsOwned?: any;
+    nftsOwned?: Array<any>;
 
 constructor() {
     if(!this.id) {
         this.id = uuidV4();
-        }
     }
+    
+    if(!this.nftsOwned) {
+        this.nftsOwned = [];
+    }
+    }
+
 }
 
 export { Wallet }
