@@ -28,6 +28,12 @@ interface IbuyNftDTO {
     nftId: number;
 }
 
+interface AdvertiseNFTDTO {
+    walletId: number;
+    nftId: number;
+    price: number;
+}
+
 class NftsRepository {
     private actions: Actions[];
     private nfts: Nft[];
@@ -131,6 +137,12 @@ class NftsRepository {
     
     listTransactions(): Actions[] {
         return this.actions;
+    }
+
+    advertiseNFT({ walletId, nftId, price }: AdvertiseNFTDTO): void {
+        this.wallets[walletId].nftsOwned?[nftId].price = price
+        
+        :this.nfts.push(this.wallets[walletId].nftsOwned?[nftId])
     }
 }
 
