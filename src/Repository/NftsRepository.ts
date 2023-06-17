@@ -19,6 +19,7 @@ interface ImakeBidDTO {
 }
 
 interface IcreateWalletDTO {
+    name: string;
     ballance: number;
     savePhrase: string;
 }
@@ -64,7 +65,7 @@ class NftsRepository {
     }
 
     list(): Nft[] {
-        return this.nfts;
+        return this.nfts;  
     }
 
     bid({ walletId, id, offer }: ImakeBidDTO): void {
@@ -91,10 +92,11 @@ class NftsRepository {
         }
     }
 
-    createWallet({ savePhrase, ballance }: IcreateWalletDTO): void {
+    createWallet({ name, savePhrase, ballance }: IcreateWalletDTO): void {
         const wallet = new Wallet() 
 
         Object.assign(wallet, {
+            name,
             ballance,
             savePhrase,
         })
@@ -111,11 +113,18 @@ class NftsRepository {
         if (Number(this.wallets[walletId].ballance) > Number(this.nfts[nftId].price)) {
             this.wallets[walletId].ballance = Number(this.wallets[walletId].ballance) - Number(this.nfts[nftId].price)
 
+            if (this.nfts[nftId].owner) {
+                const walletowner = this.nfts[nftId].owner
+                this.wallets[walletowner].ballance += Number(this.nfts[nftId].price)
+            }
+
+            this.nfts[nftId].owner = walletId
+
             this.wallets[walletId].nftsOwned?.push(this.nfts[nftId])
 
             var nftAuthor = "de " + this.nfts[nftId].author
 
-            var walletID = "para wallet id: " + this.wallets[walletId].id
+            var walletID = "para wallet id: " + this.wallets[walletId].id   
 
             var nft = this.nfts[nftId]
 
@@ -140,9 +149,17 @@ class NftsRepository {
     }
 
     advertiseNFT({ walletId, nftId, price }: AdvertiseNFTDTO): void {
-        this.wallets[walletId].nftsOwned?[nftId].price = price
+        const nft = this.wallets[walletId].nftsOwned?.[nftId]
+
+        if (!nft) return
+
+        nft.price = price
+
+        nft.owner = walletId
         
-        :this.nfts.push(this.wallets[walletId].nftsOwned?[nftId])
+        this.nfts.push(nft)
+
+        this.wallets[walletId].nftsOwned?.splice(Number(nftId), 1);
     }
 }
 

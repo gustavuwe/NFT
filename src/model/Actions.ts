@@ -1,5 +1,7 @@
+import { Nft } from '../model/Nft'
+
 class Actions {
-    transactions?: Array<any>;
+    transactions?: Array<Nft>;
 
 constructor() {
     if(!this.transactions) {

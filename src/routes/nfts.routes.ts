@@ -29,7 +29,7 @@ nftsRoutes.post("/", (request, response) => {
     
 });
 
-nftsRoutes.get("/", (request, response) => {
+nftsRoutes.get("/listnfts", (request, response) => {
     const allNfts = nftsRepository.list();
 
     return response.json(allNfts);
@@ -44,9 +44,9 @@ nftsRoutes.patch("/bid", (request, response) => {
 })
 
 nftsRoutes.post("/createwallet", (request, response) => {
-    const { savePhrase, ballance } = request.body;
+    const { name, savePhrase, ballance } = request.body;
 
-    nftsRepository.createWallet({ savePhrase, ballance });
+    nftsRepository.createWallet({ name, savePhrase, ballance });
 
     return response.status(201).send();
     
@@ -70,6 +70,14 @@ nftsRoutes.get("/transactions", (request, response) => {
     const allTransactions = nftsRepository.listTransactions();
 
     return response.json(allTransactions)
+})
+
+nftsRoutes.post("/advertise", (request, response) => {
+    const { walletId, nftId, price } = request.body
+    
+    const consolelog = nftsRepository.advertiseNFT({ walletId, nftId, price })
+
+    return response.json(consolelog).send()
 })
 
 export { nftsRoutes }

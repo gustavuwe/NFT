@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+
+        <div id="container">
+            <h1 id="title">Cadastre-se</h1>
+            <input type="text" placeholder="nome" id="nome">
+            <input type="password" placeholder="frase" id="frase">
+            <input type="submit" id="submit" placeholder="Criar Carteira" onclick="signUp(); return false">
+        </div>
+
+    </form>
+
+    <script>
+
+        import { NftsRepository } from "../Repository/NftsRepository"
+        import { Wallet } from "src\model\Wallet.ts"
+
+        const nome = document.getElementById("nome").value
+        const frase = document.getElementById("frase").value
+
+        let i;
+
+        let walletsLength = this.wallets.length
+
+        for (i = 0; i < walletsLength; i++) {
+            if (nome == this.wallets.name[i]) {
+                alert("você já possui uma carteira!")
+            }
+            i += 1
+        }
+
+    </script>
+</body>
+</html>
